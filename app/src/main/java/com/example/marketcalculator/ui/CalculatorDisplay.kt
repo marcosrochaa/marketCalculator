@@ -10,28 +10,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun CalculatorDisplay(
+    displayText: String, // Corrigido: o parâmetro displayText estava faltando
     modifier: Modifier = Modifier
 ) {
-    Box(
-        contentAlignment = Alignment.CenterEnd,
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.LightGray)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "0", // Placeholder para o valor atual
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
+    Text(
+        text = displayText,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = modifier.fillMaxWidth().padding(16.dp),
+        textAlign = TextAlign.End
+    )
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewCalculatorDisplay() {
-    CalculatorDisplay()
+    CalculatorDisplay(displayText = "123 + 456", modifier = Modifier.fillMaxWidth())
 }

@@ -1,8 +1,11 @@
 package com.example.marketcalculator.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
@@ -14,49 +17,79 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CalculatorButtons(
-    onNumberClick: (Int) -> Unit,
+    onNumberClick: (String) -> Unit,
     onOperatorClick: (String) -> Unit,
     onEqualsClick: () -> Unit,
-    onClearClick: () -> Unit
+    onClearClick: () -> Unit,
+    onBackspaceClick: () -> Unit
 ) {
     Column {
-        val buttons = listOf(
+        // Números e Operações
+        val rows = listOf(
             listOf("7", "8", "9", "/"),
             listOf("4", "5", "6", "*"),
             listOf("1", "2", "3", "-"),
-            listOf("C", "0", "=", "+")
+            listOf("0", ".", "=", "+")
         )
-        buttons.forEach { row ->
-            Row(modifier = Modifier.fillMaxWidth()) {
-                row.forEach { button ->
+
+        rows.forEach { row ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                row.forEach { buttonText ->
                     Button(
                         onClick = {
-                            when (button) {
-                                "C" -> onClearClick()
+                            when (buttonText) {
                                 "=" -> onEqualsClick()
-                                in listOf("+", "-", "*", "/") -> onOperatorClick(button)
-                                else -> onNumberClick(button.toInt())
+                                "/" -> onOperatorClick("/")
+                                "*" -> onOperatorClick("*")
+                                "-" -> onOperatorClick("-")
+                                "+" -> onOperatorClick("+")
+                                else -> onNumberClick(buttonText)
                             }
                         },
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(4.dp)
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Text(button)
+                        Text(buttonText)
                     }
                 }
+            }
+        }
+
+        // Botões de apagar (C e Backspace)
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = onClearClick,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("C") // Limpar tudo
+            }
+
+            Button(
+                onClick = onBackspaceClick,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("←") // Apagar um caractere
             }
         }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewCalculatorButtons() {
     CalculatorButtons(
-        onNumberClick = { number -> /* No-op for preview */ },
-        onOperatorClick = { operator -> /* No-op for preview */ },
-        onEqualsClick = { /* No-op for preview */ },
-        onClearClick = { /* No-op for preview */ }
+        onNumberClick = { /* Lógica para número clicado */ },
+        onOperatorClick = { /* Lógica para operador clicado */ },
+        onEqualsClick = { /* Lógica para igual clicado */ },
+        onClearClick = { /* Lógica para limpar tudo */ },
+        onBackspaceClick = { /* Lógica para apagar um caractere */ }
     )
 }
+

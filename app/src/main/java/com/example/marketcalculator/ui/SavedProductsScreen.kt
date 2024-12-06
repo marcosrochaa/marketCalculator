@@ -40,9 +40,15 @@ fun SavedProductsScreen(
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
-            items(products) { product ->
-                ProductItem(product = product)
-                Divider()
+            if (products.isNotEmpty()) {
+                items(products) { product ->
+                    ProductItem(product = product)
+                    Divider()
+                }
+            } else {
+                item {
+                    Text("Nenhum produto salvo", modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +74,7 @@ fun ProductItem(product: Product) {
                 color = Color.Gray
             )
             Text(
-                text = "Data: ${product.date}",
+                text = "Data: ${product.purchaseDate}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
@@ -80,12 +86,30 @@ fun ProductItem(product: Product) {
 @Composable
 fun SavedProductsScreenPreview() {
     val sampleProducts = listOf(
-        Product(name = "Arroz", price = 19.99, date = "06/12/2024"),
-        Product(name = "Feijão", price = 7.49, date = "06/12/2024"),
-        Product(name = "Óleo", price = 5.99, date = "05/12/2024")
+        Product(name = "Arroz", price = 19.99, purchaseDate = "06/12/2024"),
+        Product(name = "Feijão", price = 7.49, purchaseDate = "06/12/2024"),
+        Product(name = "Óleo", price = 5.99, purchaseDate = "05/12/2024")
     )
     SavedProductsScreen(
         products = sampleProducts,
         onBackClick = {}
     )
 }
+
+//@Composable
+//fun SavedProductsScreen(
+//    products: List<Product>,
+//    onBackClick: () -> Unit
+//) {
+//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+//        Text(text = "Produtos Salvos", style = MaterialTheme.typography.h4)
+//        LazyColumn(modifier = Modifier.weight(1f)) {
+//            items(products) { product ->
+//                Text(text = "${product.name} - R$${product.price} (${product.date})")
+//            }
+//        }
+//        Button(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+//            Text("Voltar")
+//        }
+//    }
+//}

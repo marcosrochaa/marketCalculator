@@ -76,7 +76,8 @@ fun AddProductScreen(
             Button(
                 onClick = {
                     val price = productPrice.toDoubleOrNull() ?: 0.0
-                    onSaveProduct(Product(productName, price, productDate))
+                    val product = Product(name = productName, price = price, purchaseDate = productDate)
+                    onSaveProduct(product) // Envia o produto para ser salvo
                 }
             ) {
                 Text("Salvar")
@@ -93,3 +94,48 @@ fun AddProductScreenPreview() {
         onCancel = { /* TODO */ }
     )
 }
+
+
+
+//@Composable
+//fun AddProductScreen(
+//    onSaveProduct: (Product) -> Unit,
+//    onCancel: () -> Unit
+//) {
+//    var productName by remember { mutableStateOf("") }
+//    var productPrice by remember { mutableStateOf("") }
+//    var productDate by remember { mutableStateOf("") }
+//
+//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+//        TextField(
+//            value = productName,
+//            onValueChange = { productName = it },
+//            label = { Text("Nome do Produto") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
+//        TextField(
+//            value = productPrice,
+//            onValueChange = { productPrice = it },
+//            label = { Text("Preço") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
+//        TextField(
+//            value = productDate,
+//            onValueChange = { productDate = it },
+//            label = { Text("Data de Compra") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
+//        Row(
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            modifier = Modifier.fillMaxWidth()
+//        ) {
+//            Button(onClick = onCancel) { Text("Cancelar") }
+//            Button(onClick = {
+//                val price = productPrice.toDoubleOrNull() ?: 0.0
+//                if (productName.isNotBlank() && price > 0 && productDate.isNotBlank()) {
+//                    onSaveProduct(Product(productName, price, productDate))
+//                }
+//            }) { Text("Salvar") }
+//        }
+//    }
+//}

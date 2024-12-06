@@ -1,41 +1,55 @@
 package com.example.marketcalculator.ui
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.marketcalculator.model.Product
+import com.example.marketcalculator.model.ProductViewModel
 import com.example.marketcalculator.model.Screen
 
 @Composable
 fun CalculatorApp() {
     val navController = rememberNavController()
+    val productViewModel: ProductViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = Screen.Calculator.route) {
         composable(Screen.Calculator.route) {
             CalculatorScreen(
-                onSaveProduct = { _, _ -> navController.navigate(Screen.AddProduct.route) },
+                onSaveProduct = { productName, productPrice ->
+                    if (productName != null && productPrice != null) {
+                        // Salva o produto no ViewModel
+                        productViewModel.addProduct(
+                            Product(
+                                name = productName,
+                                price = productPrice,
+                                purchaseDate = "Data Exemplo"
+                            )
+                        )
+                    }
+                },
                 onViewProducts = { navController.navigate(Screen.SavedProducts.route) }
-            )
-        }
-        composable(Screen.SavedProducts.route) {
-            SavedProductsScreen(
-                products = listOf(
-                    Product("Arroz", 19.99, "06/12/2024"),
-                    Product("Feijão", 7.49, "06/12/2024")
-                ),
-                onBackClick = { navController.popBackStack() }
             )
         }
         composable(Screen.AddProduct.route) {
             AddProductScreen(
                 onSaveProduct = { product ->
-                    // TODO: Salvar produto no ViewModel ou banco de dados
-                    navController.popBackStack() // Voltar à tela anterior
+                    productViewModel.addProduct(product)
+                    navController.popBackStack()
                 },
                 onCancel = { navController.popBackStack() }
             )
         }
+        composable(Screen.SavedProducts.route) {
+            SavedProductsScreen(
+                products = productViewModel.products.value,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
     }
 }
+
+
+
 
