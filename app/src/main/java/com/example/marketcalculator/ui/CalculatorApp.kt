@@ -44,7 +44,8 @@ fun CalculatorApp() {
         composable(Screen.SavedProducts.route) {
             SavedProductsScreen(
                 products = productViewModel.products.value,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onDeleteProduct = TODO()
             )
         }
     }

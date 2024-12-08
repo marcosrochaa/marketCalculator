@@ -20,12 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.marketcalculator.extensions.formatPrice
+import com.example.marketcalculator.extensions.formatData
 import com.example.marketcalculator.model.Product
 
 @Composable
 fun SavedProductsScreen(
     products: List<Product>,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onDeleteProduct: (Product) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -42,7 +45,10 @@ fun SavedProductsScreen(
         ) {
             if (products.isNotEmpty()) {
                 items(products) { product ->
-                    ProductItem(product = product)
+                    ProductItem(
+                        product = product,
+                        onDelete = onDeleteProduct
+                    )
                     Divider()
                 }
             } else {
@@ -59,25 +65,29 @@ fun SavedProductsScreen(
 }
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onDelete: (Product) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
             Text(text = product.name, style = MaterialTheme.typography.headlineMedium)
             Text(
-                text = "Preço: R$ ${product.price}",
+                text = "Preço: ${formatPrice(product.price)}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
             Text(
-                text = "Data: ${product.purchaseDate}",
+                text = "Data: ${formatData(product.purchaseDate)}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
+        }
+        Button(onClick = { onDelete(product) }) {
+            Text("Excluir")
         }
     }
 }
@@ -86,30 +96,14 @@ fun ProductItem(product: Product) {
 @Composable
 fun SavedProductsScreenPreview() {
     val sampleProducts = listOf(
-        Product(name = "Arroz", price = 19.99, purchaseDate = "06/12/2024"),
-        Product(name = "Feijão", price = 7.49, purchaseDate = "06/12/2024"),
-        Product(name = "Óleo", price = 5.99, purchaseDate = "05/12/2024")
+        Product(name = "Arroz", price = 19.99, purchaseDate = "2024-12-06"),
+        Product(name = "Feijão", price = 7.49, purchaseDate = "2024-12-06"),
+        Product(name = "Óleo", price = 5.99, purchaseDate = "2024-12-05")
     )
     SavedProductsScreen(
         products = sampleProducts,
-        onBackClick = {}
+        onBackClick = {},
+        onDeleteProduct = {}
     )
 }
 
-//@Composable
-//fun SavedProductsScreen(
-//    products: List<Product>,
-//    onBackClick: () -> Unit
-//) {
-//    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-//        Text(text = "Produtos Salvos", style = MaterialTheme.typography.h4)
-//        LazyColumn(modifier = Modifier.weight(1f)) {
-//            items(products) { product ->
-//                Text(text = "${product.name} - R$${product.price} (${product.date})")
-//            }
-//        }
-//        Button(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-//            Text("Voltar")
-//        }
-//    }
-//}
