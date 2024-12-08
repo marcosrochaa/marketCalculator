@@ -1,6 +1,7 @@
 package com.example.marketcalculator.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,7 @@ fun CalculatorApp() {
     NavHost(navController = navController, startDestination = Screen.Calculator.route) {
         composable(Screen.Calculator.route) {
             CalculatorScreen(
+                calculatorViewModel = viewModel(),
                 onSaveProduct = { productName, productPrice ->
                     if (productName != null && productPrice != null) {
                         // Salva o produto no ViewModel
@@ -29,7 +31,8 @@ fun CalculatorApp() {
                         )
                     }
                 },
-                onViewProducts = { navController.navigate(Screen.SavedProducts.route) }
+                onViewProducts = { navController.navigate(Screen.SavedProducts.route) },
+                navController = navController // Passando o navController
             )
         }
         composable(Screen.AddProduct.route) {
@@ -53,6 +56,11 @@ fun CalculatorApp() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun CalculatorAppPreview() {
+    CalculatorApp()
+}
 
 
 

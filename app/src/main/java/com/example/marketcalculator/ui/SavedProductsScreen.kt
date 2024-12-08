@@ -45,10 +45,7 @@ fun SavedProductsScreen(
         ) {
             if (products.isNotEmpty()) {
                 items(products) { product ->
-                    ProductItem(
-                        product = product,
-                        onDelete = onDeleteProduct
-                    )
+                    ProductItem(product = product, onDeleteProduct = onDeleteProduct)
                     Divider()
                 }
             } else {
@@ -65,7 +62,7 @@ fun SavedProductsScreen(
 }
 
 @Composable
-fun ProductItem(product: Product, onDelete: (Product) -> Unit) {
+fun ProductItem(product: Product, onDeleteProduct: (Product) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +82,10 @@ fun ProductItem(product: Product, onDelete: (Product) -> Unit) {
                 color = Color.Gray
             )
         }
-        Button(onClick = { onDelete(product) }) {
+        Button(
+            onClick = { onDeleteProduct(product) },
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
             Text("Excluir")
         }
     }
@@ -95,10 +95,11 @@ fun ProductItem(product: Product, onDelete: (Product) -> Unit) {
 @Composable
 fun SavedProductsScreenPreview() {
     val sampleProducts = listOf(
-        Product(name = "Arroz", price = 19.99, purchaseDate = "2024-12-06"),
-        Product(name = "Feijão", price = 7.49, purchaseDate = "2024-12-06"),
-        Product(name = "Óleo", price = 5.99, purchaseDate = "2024-12-05")
+        Product(name = "Arroz", price = 19.99, purchaseDate = "06/12/2024"),
+        Product(name = "Feijão", price = 7.49, purchaseDate = "06/12/2024"),
+        Product(name = "Óleo", price = 5.99, purchaseDate = "05/12/2024")
     )
+
     SavedProductsScreen(
         products = sampleProducts,
         onBackClick = {},

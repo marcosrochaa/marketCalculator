@@ -18,13 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.marketcalculator.model.CalculatorViewModel
+import com.example.marketcalculator.model.Screen
 
 @Composable
 fun CalculatorScreen(
     calculatorViewModel: CalculatorViewModel = viewModel(),
     onSaveProduct: (String, Double) -> Unit,
-    onViewProducts: () -> Unit
+    onViewProducts: () -> Unit,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -65,6 +69,7 @@ fun CalculatorScreen(
             Button(onClick = {
                 // Substitua por lógica real de salvar produto
                 onSaveProduct("Produto Exemplo", 99.99)
+                navController.navigate(Screen.SavedProducts.route) // Navega para a tela de produtos salvos
             }) {
                 Text("Salvar Produto")
             }
@@ -79,7 +84,7 @@ fun CalculatorScreen(
 @Preview(showBackground = true)
 @Composable
 fun CalculatorScreenPreview() {
-    // Simulando um ViewModel com estado fixo
+    val navController = rememberNavController()
     val fakeViewModel = object : CalculatorViewModel() {
         @SuppressLint("UnrememberedMutableState")
         override var displayText = mutableStateOf("123 + 456")
@@ -88,9 +93,11 @@ fun CalculatorScreenPreview() {
     CalculatorScreen(
         calculatorViewModel = fakeViewModel,
         onSaveProduct = { _, _ -> },
-        onViewProducts = {}
+        onViewProducts = {},
+        navController = navController
     )
 }
+
 
 
 
