@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +31,7 @@ import com.example.marketcalculator.model.Product
 @Composable
 fun SavedProductsScreen(
     products: List<Product>,
+    totalPrice: Double, // Passando o preço total como parâmetro
     onBackClick: () -> Unit,
     onDeleteProduct: (Product) -> Unit
 ) {
@@ -40,6 +45,7 @@ fun SavedProductsScreen(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
@@ -54,15 +60,31 @@ fun SavedProductsScreen(
                 }
             }
         }
+
+        // Barra de preço total
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onBackClick, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text("Voltar")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Total: R$ ${"%.2f".format(totalPrice)}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Button(onClick = onBackClick) {
+                Text("Voltar")
+            }
         }
     }
 }
 
 @Composable
-fun ProductItem(product: Product, onDeleteProduct: (Product) -> Unit) {
+fun ProductItem(
+    product: Product,
+    onDeleteProduct: (Product) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -82,11 +104,9 @@ fun ProductItem(product: Product, onDeleteProduct: (Product) -> Unit) {
                 color = Color.Gray
             )
         }
-        Button(
-            onClick = { onDeleteProduct(product) },
-            modifier = Modifier.align(Alignment.CenterVertically)
-        ) {
-            Text("Excluir")
+
+        IconButton(onClick = { onDeleteProduct(product) }) {
+            Icon(imageVector = Icons.Default.Delete, contentDescription = "Excluir Produto")
         }
     }
 }
@@ -99,11 +119,12 @@ fun SavedProductsScreenPreview() {
         Product(name = "Feijão", price = 7.49, purchaseDate = "06/12/2024"),
         Product(name = "Óleo", price = 5.99, purchaseDate = "05/12/2024")
     )
-
     SavedProductsScreen(
         products = sampleProducts,
+        totalPrice = sampleProducts.sumOf { it.price },
         onBackClick = {},
         onDeleteProduct = {}
     )
 }
+
 

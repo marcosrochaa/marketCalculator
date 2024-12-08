@@ -20,7 +20,12 @@ class ProductViewModel : ViewModel() {
         _products.value = _products.value - product
     }
 
-    // Função para realizar as operações
+    // Função para calcular o preço total dos produtos
+    fun getTotalPrice(): Double {
+        return _products.value.sumOf { it.price }
+    }
+
+    // Função para realizar as operações da calculadora
     fun calculate(operation: String, num1: Double, num2: Double) {
         val result = when (operation) {
             "add" -> num1 + num2

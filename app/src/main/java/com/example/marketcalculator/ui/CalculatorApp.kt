@@ -45,7 +45,11 @@ fun CalculatorApp() {
             )
         }
         composable(Screen.SavedProducts.route) {
+
+            val totalPrice = productViewModel.products.value.sumOf { it.price }
+
             SavedProductsScreen(
+                totalPrice = totalPrice,
                 products = productViewModel.products.value,
                 onBackClick = { navController.popBackStack() },
                 onDeleteProduct = { product ->
