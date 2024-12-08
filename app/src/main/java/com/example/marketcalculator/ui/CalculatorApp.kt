@@ -36,20 +36,23 @@ fun CalculatorApp() {
             AddProductScreen(
                 onSaveProduct = { product ->
                     productViewModel.addProduct(product)
-                    navController.popBackStack()
+                    navController.popBackStack() // Voltar para a tela anterior
                 },
-                onCancel = { navController.popBackStack() }
+                onCancel = { navController.popBackStack() } // Cancelar e voltar
             )
         }
         composable(Screen.SavedProducts.route) {
             SavedProductsScreen(
                 products = productViewModel.products.value,
                 onBackClick = { navController.popBackStack() },
-                onDeleteProduct = TODO()
+                onDeleteProduct = { product ->
+                    productViewModel.removeProduct(product)
+                }
             )
         }
     }
 }
+
 
 
 

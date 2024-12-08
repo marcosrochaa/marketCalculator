@@ -70,18 +70,17 @@ fun ProductItem(product: Product, onDelete: (Product) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
             Text(text = product.name, style = MaterialTheme.typography.headlineMedium)
             Text(
-                text = "Preço: ${formatPrice(product.price)}",
+                text = "Preço: R$ ${product.price}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
             Text(
-                text = "Data: ${formatData(product.purchaseDate)}",
+                text = "Data: ${product.purchaseDate}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
