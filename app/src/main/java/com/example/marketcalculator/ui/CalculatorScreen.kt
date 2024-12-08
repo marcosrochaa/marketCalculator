@@ -28,7 +28,7 @@ fun CalculatorScreen(
     calculatorViewModel: CalculatorViewModel = viewModel(),
     onSaveProduct: (String, Double) -> Unit,
     onViewProducts: () -> Unit,
-    navController: NavController
+    navController: NavController // Adicione o NavController
 ) {
     Column(
         modifier = Modifier
@@ -67,9 +67,8 @@ fun CalculatorScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(onClick = {
-                // Substitua por lógica real de salvar produto
-                onSaveProduct("Produto Exemplo", 99.99)
-                navController.navigate(Screen.SavedProducts.route) // Navega para a tela de produtos salvos
+                // Navegar para a tela de adição de produto
+                navController.navigate(Screen.AddProduct.route)
             }) {
                 Text("Salvar Produto")
             }

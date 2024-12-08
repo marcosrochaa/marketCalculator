@@ -43,13 +43,18 @@ fun AddProductScreen(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 16.dp)
         )
+
+        // Campo de Nome do Produto
         OutlinedTextField(
             value = productName,
             onValueChange = { productName = it },
             label = { Text("Nome do Produto") },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Campo de Preço
         OutlinedTextField(
             value = productPrice,
             onValueChange = { productPrice = it },
@@ -57,15 +62,22 @@ fun AddProductScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Campo de Data de Compra
         OutlinedTextField(
             value = productDate,
             onValueChange = { productDate = it },
             label = { Text("Data de Compra") },
             placeholder = { Text("dd/MM/yyyy") },
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Botões de Salvar e Cancelar
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -73,11 +85,24 @@ fun AddProductScreen(
             Button(onClick = onCancel) {
                 Text("Cancelar")
             }
+
             Button(
                 onClick = {
-                    val price = productPrice.toDoubleOrNull() ?: 0.0
-                    val product = Product(name = productName, price = price, purchaseDate = productDate)
-                    onSaveProduct(product) // Envia o produto para ser salvo
+                    if (productName.isNotBlank() && productPrice.isNotBlank() && productDate.isNotBlank()) {
+                        val price = productPrice.toDoubleOrNull()
+                        if (price != null) {
+                            val product = Product(
+                                name = productName,
+                                price = price,
+                                purchaseDate = productDate
+                            )
+                            onSaveProduct(product)
+                        } else {
+                            // Exibe uma mensagem de erro para preço inválido
+                        }
+                    } else {
+                        // Exibe uma mensagem de erro para campos em branco
+                    }
                 }
             ) {
                 Text("Salvar")
@@ -90,10 +115,17 @@ fun AddProductScreen(
 @Composable
 fun AddProductScreenPreview() {
     AddProductScreen(
-        onSaveProduct = { /* TODO */ },
-        onCancel = { /* TODO */ }
+        onSaveProduct = { product ->
+            // Simula o que acontece quando o produto é salvo
+            println("Produto salvo: $product")
+        },
+        onCancel = {
+            // Simula o cancelamento da ação
+            println("Ação de cancelamento")
+        }
     )
 }
+
 
 
 
